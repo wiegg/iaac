@@ -32,7 +32,7 @@ jobs:
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
-      run: terraform plan
+      run: TF_VAR_token="${{ secrets.API_TOKEN }}" terraform plan
 
   deploy:
     name: 'Deploy changes'
