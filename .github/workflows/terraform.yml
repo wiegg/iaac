@@ -34,7 +34,7 @@ jobs:
     - name: Terraform Plan
       run: terraform plan
       env:
-        TF_VAR_token: ${{ secrets.API_TOKEN_READ }}
+        TF_VAR_token: ${{ secrets.API_KEY_READ }}
 
   deploy:
     name: 'Deploy changes'
