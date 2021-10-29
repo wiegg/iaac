@@ -64,7 +64,9 @@ jobs:
         path: .
 
     - name: Display structure of downloaded files
-      run: ls -R .
+      run: ls -R . && echo $TOKEN
+      env:
+        TOKEN: ${{ secrets.API_KEY }}
 
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
