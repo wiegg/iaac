@@ -2,7 +2,8 @@ import json
 import yaml
 
 with open('state.json') as f:
-  data = json.load(f)
+  raw = f.read()
+  data = json.loads(raw)
 
 ip_list = {}
 

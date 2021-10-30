@@ -97,7 +97,7 @@ jobs:
 
     - uses: actions/setup-python@v2
       with:
-        python-version: '3.x' 
+        python-version: '3.7' 
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
@@ -147,7 +147,6 @@ jobs:
     - name: Build Inventory From TF State
       run: |
         terraform state pull > state.json
-        cat state.json
         python -m pip install pyyaml
         python inventory.py > inventory.yml
 
