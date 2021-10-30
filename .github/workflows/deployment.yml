@@ -149,8 +149,8 @@ jobs:
 
     - name: Build Inventory From TF State
       run: |
-        echo "${{ steps.state.outputs.stdout }}"
-        ${{ steps.state.outputs.stdout }} > state.json
+        "${{ steps.state.outputs.stdout }}" > state.json
+        cat state.json
         npm i yaml
         node inventory.js
 
