@@ -3,7 +3,15 @@ const yaml = require("yaml")
 
 const raw = fs.readFileSync("state.json")
 
-const data = JSON.parse(raw)
+
+console.log("\n\n\n\n")
+
+console.log(raw.toString())
+
+console.log("\n\n\n\n")
+
+
+const data = JSON.parse(raw.toString())
 ip_list = {}
 
 data["resources"].forEach(i => {
