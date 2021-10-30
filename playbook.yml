@@ -5,3 +5,20 @@
   tasks:
     - name: Apache
       apt: name=apache2 update_cache=yes state=latest
+
+- name: Setup redis
+  hosts: redis
+  user: root
+
+  tasks:
+    - name: Update
+      apt: update_cache=yes
+
+    - name: Install redis
+      apt: name=redis-server state=latest
+
+      notify:
+        - systemctl restart redis.service
+
+    - name: Restart Redis Server
+      service: name=redis state=restarted enabled=yes
