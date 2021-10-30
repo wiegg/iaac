@@ -122,13 +122,13 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Download state
-      uses: ulaval/azure-blob-copy-action@v1
-      with:
-        action: download
-        connection_string: ${{ secrets.AZURE_STORAGE_STRING }}
-        container_name: tfwiegg
-        local_directory: .
+    # - name: Download state
+    #   uses: ulaval/azure-blob-copy-action@v1
+    #   with:
+    #     action: download
+    #     connection_string: ${{ secrets.AZURE_STORAGE_STRING }}
+    #     container_name: tfwiegg
+    #     local_directory: .
 
     - name: Print state
       run: cat terraform.tfstate
@@ -160,3 +160,5 @@ jobs:
 
     - name: Run Playbook
       run: ansible-playbook --inventory-file=./terraform-inventory --private-key=ssh.key playbook.yml
+      env:
+        TF_STATE: .
