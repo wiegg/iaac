@@ -1,2 +1,2 @@
-# wiegg_iaac
+# wie.gg Infrastructure
 Infrastructure-as-a-Code for the wie.gg project
