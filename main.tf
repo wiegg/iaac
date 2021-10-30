@@ -17,31 +17,7 @@ provider "hcloud" {
 
 resource "hcloud_server" "node1" {
   name = "node1"
-  image = "debian-9"
+  image = "ubuntu-20.04"
   server_type = "cx11"
-
-  firewall_ids = [hcloud_firewall.firewall.id]
-}
-
-resource "hcloud_firewall" "firewall" {
-  name = "firewall"
-  rule {
-    direction = "in"
-    protocol = "tcp"
-    port = "22"
-    source_ips = [
-      "0.0.0.0/0",
-      "::/0"
-    ]
-  }
-
-  rule {
-    direction = "out"
-    protocol = "tcp"
-    port = "22"
-    source_ips = [
-      "0.0.0.0/0",
-      "::/0"
-    ]
-  }
+  location = "nbg1"
 }
