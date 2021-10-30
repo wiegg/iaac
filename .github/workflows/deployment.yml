@@ -130,9 +130,6 @@ jobs:
     #     container_name: tfwiegg
     #     local_directory: .
 
-    - name: Print state
-      run: cat terraform.tfstate
-
     - name: Install ansible
       run: |
         sudo apt update
