@@ -145,7 +145,7 @@ jobs:
         SSH_KEY: ${{ secrets.SSH_KEY }}
 
     - id: state
-      run: terraform show -no-color -json
+      run: terraform state pull
 
     - name: Build Inventory From TF State
       run: |
