@@ -48,13 +48,13 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
           const output = `
-          ## Suggested changes:
+          **@${{ github.actor }} suggests the following changes in this ${{ github.event_name }}:**  
 
           \`\`\`terraform\n
           ${process.env.PLAN}
           \`\`\`
 
-          *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+          `;
 
           github.issues.createComment({
             issue_number: context.issue.number,
