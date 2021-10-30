@@ -1,4 +1,4 @@
 variable "token" {
-  sensitive = true
+  sensitive   = true
   description = "The Hetzner Cloud API token"
 }

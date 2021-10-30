@@ -1,4 +1,4 @@
-name: 'Terraform'
+name: 'Hetzner Deployment'
 
 on:
   push:
