@@ -3,6 +3,7 @@ const yaml = require("yaml")
 
 const raw = fs.readFileSync("state.json")
 
+console.log("STATE:")
 console.log(raw.toString())
 
 const data = JSON.parse(raw.toString())
