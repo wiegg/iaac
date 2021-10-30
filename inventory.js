@@ -1,31 +1,28 @@
 const fs = require("fs")
 // const yaml = require("yaml")
 
-const raw = fs.readFileSync("state.json")
+const raw = fs.readFileSync("state.json").toString().split("\n").slice(1).join("\n")
 
-// remove first line by github runner
-let content = raw.toString().split('\n')
-content.shift()
-content = content.join('\n')
+console.log(raw)
 
-console.log(content)
+const data = JSON.parse(raw)
+ip_list = {}
 
-const data = JSON.parse(content)
-// ip_list = {}
+data["resources"].forEach(i => {
+  if (i["type"] == "hcloud_server" && i["mode"] == "managed") {
+    i["instances"].forEach(s => {
+      ip_list[s["attributes"]["ipv4_address"]] = null
+    })
+  }
+});
 
-// data["resources"].forEach(i => {
-//   if (i["type"] == "hcloud_server" && i["mode"] == "managed") {
-//     i["instances"].forEach(s => {
-//       ip_list[s["attributes"]["ipv4_address"]] = null
-//     })
-//   }
-// });
+const inventory = {
+  nodes: {
+    hosts: ip_list
+  }
+}
 
-// const inventory = {
-//   nodes: {
-//     hosts: ip_list
-//   }
-// }
+console.log(inventory)
 
 // console.log(yaml.stringify(inventory))
 

@@ -151,7 +151,6 @@ jobs:
         terraform state pull > state.json
         npm i yaml
         node inventory.js
-        cat inventory.yml
 
     - name: Run Playbook
       run: ansible-playbook --inventory-file=inventory.yml --private-key=ssh.key playbook.yml
