@@ -148,10 +148,7 @@ jobs:
     - name: Unzip
       uses: TonyBogdanov/zip@1.0
       with:
-          args: unzip -qq ./tf-inv.zip -d ./tf
-
-    - name: Make executable
-      run: chmod +x ./tf/terraform-inventory
+          args: unzip -qq ./tf-inv.zip
 
     - name: Create ssh key
       run: echo "$SSH_KEY" > ssh.key
@@ -159,4 +156,4 @@ jobs:
         SSH_KEY: ${{ secrets.SSH_KEY }}
 
     - name: Run Playbook
-      run: ansible-playbook --inventory-file=tf/terraform-inventory --private-key=ssh.key playbook.yml
+      run: ansible-playbook --inventory-file=./terraform-inventory --private-key=ssh.key playbook.yml
