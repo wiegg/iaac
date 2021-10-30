@@ -1,9 +1,7 @@
 const fs = require("fs")
-// const yaml = require("yaml")
+const yaml = require("yaml")
 
 const raw = fs.readFileSync("state.json")
-
-console.log(raw)
 
 const data = JSON.parse(raw)
 ip_list = {}
@@ -22,8 +20,6 @@ const inventory = {
   }
 }
 
-console.log(inventory)
+console.log(yaml.stringify(inventory))
 
-// console.log(yaml.stringify(inventory))
-
-// fs.writeFileSync('inventory.yml', yaml.stringify(inventory))
+fs.writeFileSync('inventory.yml', yaml.stringify(inventory))
