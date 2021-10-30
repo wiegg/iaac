@@ -1,6 +1,5 @@
 terraform {
   backend "azurerm" {
-    resource_group_name = var.backend_rg_name
   }
 
   required_providers {
