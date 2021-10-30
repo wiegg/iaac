@@ -3,10 +3,12 @@ const yaml = require("yaml")
 
 const raw = fs.readFileSync("state.json")
 
-console.log("STATE:")
-console.log(raw.toString())
+// remove first line by github runner
+let content = raw.toString().split('\n')
+content.shift()
+content = content.join('\n')
 
-const data = JSON.parse(raw.toString())
+const data = JSON.parse(content)
 ip_list = {}
 
 data["resources"].forEach(i => {
