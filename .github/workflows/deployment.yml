@@ -144,7 +144,7 @@ jobs:
       env:
         SSH_KEY: ${{ secrets.SSH_KEY }}
 
-    - run: terraform state pull > state.json
+    - run: terraform state pull > test && cat test
 
     - name: Build Inventory From TF State
       run: |
