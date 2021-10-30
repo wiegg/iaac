@@ -151,7 +151,8 @@ jobs:
       run: |
         echo "${{ steps.state.outputs.stdout }}" > state.json
         npm i yaml
-        node inventory.js
+        cat state.json
+        # node inventory.js
 
     - name: Run Playbook
       run: ansible-playbook --inventory-file=inventory.yml --private-key=ssh.key playbook.yml
