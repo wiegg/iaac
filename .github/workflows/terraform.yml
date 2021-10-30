@@ -34,7 +34,7 @@ jobs:
     - name: Terraform Plan
       id: plan
       continue-on-error: true
-      run: terraform plan -out iaac.tfplan
+      run: terraform plan -no-color -out iaac.tfplan
       env:
         TF_VAR_token: ${{ secrets.API_KEY_READ }}
 
