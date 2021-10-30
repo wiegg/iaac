@@ -145,12 +145,11 @@ jobs:
         SSH_KEY: ${{ secrets.SSH_KEY }}
 
     - id: state
-      run: terraform state pull
+      run: terraform show -no-color -json
 
     - name: Build Inventory From TF State
       run: |
         echo "${{ steps.state.outputs.stdout }}" > state.json
-        cat state.json
         npm i yaml
         node inventory.js
 
