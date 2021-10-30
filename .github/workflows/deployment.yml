@@ -114,8 +114,8 @@ jobs:
     name: 'Configure Machines'
     runs-on: ubuntu-latest
     #needs: deploy
-    environment: Hetzner
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    #environment: Hetzner
+    #if: github.ref == 'refs/heads/main' && github.event_name == 'push'
 
     steps:
     # Checkout the repository to the GitHub Actions runner
@@ -129,6 +129,9 @@ jobs:
         connection_string: ${{ secrets.AZURE_STORAGE_STRING }}
         container_name: tfwiegg
         local_directory: .
+
+    - name: Print state
+      run: cat terraform.tfstate
 
     - name: Install ansible
       run: |
