@@ -1,0 +1,7 @@
+- name: Start web server
+  hosts: node1
+  user: root
+
+  tasks:
+    - name: Apache
+      apt: name=apache2 update_cache=yes state=latest
