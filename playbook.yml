@@ -1,5 +1,5 @@
 - name: Start web server
-  hosts: node1
+  hosts: nodes
   user: root
 
   tasks:

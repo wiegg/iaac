@@ -95,6 +95,10 @@ jobs:
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
 
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.x' 
+
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
       run: terraform init -backend-config="storage_account_name=statestoragegh" -backend-config="container_name=tfwiegg" -backend-config="key=terraform.tfstate" -backend-config="access_key=${{ secrets.AZURE_STORAGE_KEY }}"
@@ -129,33 +133,22 @@ jobs:
     - name: Terraform Init
       run: terraform init -backend-config="storage_account_name=statestoragegh" -backend-config="container_name=tfwiegg" -backend-config="key=terraform.tfstate" -backend-config="access_key=${{ secrets.AZURE_STORAGE_KEY }}"
 
-
     - name: Install ansible
       run: |
         sudo apt update
         sudo apt install ansible -y
         ansible --version
 
-    - name: Fetch terraform-inventory release
-      uses: dsaltares/fetch-gh-release-asset@master
-      with:
-        repo: "adammck/terraform-inventory"
-        version: "tags/v0.10"
-        file: "terraform-inventory_v0.10_linux_amd64.zip"
-        target: "./tf-inv.zip"
-        token: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Unzip
-      uses: TonyBogdanov/zip@1.0
-      with:
-          args: unzip -qq ./tf-inv.zip
-
     - name: Create ssh key
       run: echo "$SSH_KEY" > ssh.key
       env:
         SSH_KEY: ${{ secrets.SSH_KEY }}
 
+    - name: Build Inventory From TF State
+      run: |
+        terraform state pull > state.json
+        python -m pip install pyyaml
+        python inventory.py > inventory.yml
+
     - name: Run Playbook
-      run: ansible-playbook --inventory-file=./terraform-inventory --private-key=ssh.key playbook.yml
-      env:
-        TF_STATE: .
+      run: ansible-playbook --inventory-file=inventory.yml --private-key=ssh.key playbook.yml
