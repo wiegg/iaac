@@ -37,6 +37,11 @@ jobs:
       run: terraform plan -no-color -out iaac.tfplan
       env:
         TF_VAR_token: ${{ secrets.API_KEY_READ }}
+        TF_VAR_backend_rg_name: "github"
+        TF_VAR_backend_storage_account_name: "statestoragegh"
+        TF_VAR_backend_container_name: tfwiegg
+        TF_VAR_backend_key: terraform.tfstate
+        TF_VAR_backend_ak: ${{ secrets.AZURE_STORAGE_KEY }}
 
     # add plan to pull request
     - name: Update Pull Request
@@ -109,6 +114,11 @@ jobs:
       run: terraform plan -out iaac.tfplan
       env:
         TF_VAR_token: ${{ secrets.API_KEY }}
+        TF_VAR_backend_rg_name: "github"
+        TF_VAR_backend_storage_account_name: "statestoragegh"
+        TF_VAR_backend_container_name: tfwiegg
+        TF_VAR_backend_key: terraform.tfstate
+        TF_VAR_backend_ak: ${{ secrets.AZURE_STORAGE_KEY }}
 
       # On push to main, build or change infrastructure according to Terraform configuration files
       # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks

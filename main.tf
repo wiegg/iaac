@@ -1,4 +1,8 @@
 terraform {
+  backend "azurerm" {
+    resource_group_name = var.backend_rg_name
+  }
+
   required_providers {
     hcloud = {
       source = "hetznercloud/hcloud"
@@ -9,11 +13,6 @@ terraform {
 
 provider "hcloud" {
   token = var.token
-}
-
-variable "token" {
-  sensitive = true
-  description = "The Hetzner Cloud API token"
 }
 
 resource "hcloud_server" "node1" {
