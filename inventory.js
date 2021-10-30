@@ -24,3 +24,5 @@ const inventory = {
 }
 
 console.log(yaml.stringify(inventory))
+
+fs.writeFileSync('inventory.yml', yaml.stringify(inventory))
