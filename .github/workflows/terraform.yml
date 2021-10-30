@@ -32,10 +32,43 @@ jobs:
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
+      id: plan
+      continue-on-error: true
       run: terraform plan -out iaac.tfplan
       env:
         TF_VAR_token: ${{ secrets.API_KEY_READ }}
 
+    # add plan to pull request
+    - name: Update Pull Request
+      uses: actions/github-script@0.9.0
+      if: github.event_name == 'pull_request'
+      env:
+        PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const output = `
+          ## Suggested changes:
+
+          \`\`\`\n
+          ${process.env.PLAN}
+          \`\`\`
+
+          *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+
+          github.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: output
+          })
+
+    # Checks if plan was successful
+    - name: Terraform Plan Status
+      if: steps.plan.outcome == 'failure'
+      run: exit 1
+
+    # upload plan as artifact for review and following stages
     - uses: actions/upload-artifact@v2
       with:
         name: plan
