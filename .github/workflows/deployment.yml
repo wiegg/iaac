@@ -95,10 +95,6 @@ jobs:
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
 
-    - uses: actions/setup-python@v2
-      with:
-        python-version: '3.7' 
-
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
       run: terraform init -backend-config="storage_account_name=statestoragegh" -backend-config="container_name=tfwiegg" -backend-config="key=terraform.tfstate" -backend-config="access_key=${{ secrets.AZURE_STORAGE_KEY }}"
@@ -129,6 +125,10 @@ jobs:
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
 
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
       run: terraform init -backend-config="storage_account_name=statestoragegh" -backend-config="container_name=tfwiegg" -backend-config="key=terraform.tfstate" -backend-config="access_key=${{ secrets.AZURE_STORAGE_KEY }}"
@@ -147,8 +147,8 @@ jobs:
     - name: Build Inventory From TF State
       run: |
         terraform state pull > state.json
-        python -m pip install pyyaml
-        python inventory.py > inventory.yml
+        npm i yaml
+        node inventory.js > inventory.yml
 
     - name: Run Playbook
       run: ansible-playbook --inventory-file=inventory.yml --private-key=ssh.key playbook.yml
