@@ -14,6 +14,10 @@ provider "hcloud" {
   token = var.token
 }
 
+data "hcloud_ssh_key" "private_key" {
+  fingerprint = "7f:fd:f1:d0:4a:56:a9:70:db:9c:3e:4b:3c:52:7a:81"
+}
+
 resource "hcloud_network" "network" {
   name     = "network"
   ip_range = "10.0.0.0/16"
@@ -31,6 +35,8 @@ resource "hcloud_server" "node1" {
   image       = "ubuntu-20.04"
   server_type = "cx11"
   location    = "nbg1"
+
+  ssh_keys = [data.hcloud_ssh_key.private_key.id]
 
   network {
     network_id = hcloud_network.network.id
