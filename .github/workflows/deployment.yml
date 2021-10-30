@@ -149,10 +149,10 @@ jobs:
 
     - name: Build Inventory From TF State
       run: |
-        echo "${{ steps.state.outputs.stdout }}" > state.json
         npm i yaml
-        cat state.json
-        # node inventory.js
+        node inventory.js
+      env:
+        STATE: ${{ steps.state.outputs.stdout }}
 
     - name: Run Playbook
       run: ansible-playbook --inventory-file=inventory.yml --private-key=ssh.key playbook.yml

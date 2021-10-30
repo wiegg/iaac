@@ -1,6 +1,7 @@
 const fs = require("fs")
 const yaml = require("yaml")
-const data = require("./state.json")
+
+const data = JSON.parse(process.env.STATE.toString())
 
 ip_list = {}
 
