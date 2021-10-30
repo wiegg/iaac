@@ -147,6 +147,7 @@ jobs:
     - name: Build Inventory From TF State
       run: |
         terraform state pull > state.json
+        cat state.json
         python -m pip install pyyaml
         python inventory.py > inventory.yml
 
