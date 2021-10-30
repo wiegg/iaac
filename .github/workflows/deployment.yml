@@ -133,22 +133,24 @@ jobs:
     - name: Terraform Init
       run: terraform init -backend-config="storage_account_name=statestoragegh" -backend-config="container_name=tfwiegg" -backend-config="key=terraform.tfstate" -backend-config="access_key=${{ secrets.AZURE_STORAGE_KEY }}"
 
-    - name: Install ansible
-      run: |
-        sudo apt update
-        sudo apt install ansible -y
-        ansible --version
+    # - name: Install ansible
+    #   run: |
+    #     sudo apt update
+    #     sudo apt install ansible -y
+    #     ansible --version
 
     - name: Create ssh key
       run: echo "$SSH_KEY" > ssh.key
       env:
         SSH_KEY: ${{ secrets.SSH_KEY }}
 
-    - run: terraform state pull > test && cat test
+    - id: state
+      run: echo "::set-output name=state::$(terraform state pull)"
 
     - name: Build Inventory From TF State
       run: |
-        terraform state pull > state.json
+        echo ${{ steps.state.outputs.state }}
+        ${{ steps.state.outputs.state }} > state.json
         npm i yaml
         node inventory.js
 
