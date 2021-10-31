@@ -159,6 +159,6 @@ jobs:
         ansible-galaxy collection install community.general
     
     - name: Run Playbook
-      run: ansible-playbook --inventory-file=inventory.yml --private-key=ssh.key playbook.yml
+      run: ansible-playbook --inventory-file=inventory.yml playbook.yml
       env:
         ANSIBLE_HOST_KEY_CHECKING: false
