@@ -3,21 +3,58 @@
   user: root
 
   tasks:
-    - name: Install GitHub3
-      pip:
-        name: github3
+    - name: Create lnk group
+      group:
+        name: lnk
+        state: present
 
-    - name: Get release
-      community.general.github_release:
-        user: wiegg
-        repo: lnk
-        action: latest_release
+    - name: Create lnk user
+      user:
+        name: lnk
+        groups: ["lnk"]
+        shell: /sbin/nologin
+        append: yes
+        state: present
+        create_home: no
 
-    - name: Find Standalone
-      find:
-        paths: .
-        recurse: yes
-        pattern: "*lnk*"
+    - name: Get Release Info
+      uri:
+        url: https://api.github.com/repos/wiegg/lnk/releases/latest
+        return_content: true
+      register: release_response
+
+    - name: Get Asset Info
+      uri:
+        url: "{{ release_response.json.assets[0].url }}"
+        return_content: true
+      register: asset_response
+
+    - name: Download binary
+      get_url:
+        url: "{{ asset_response.json.browser_download_url }}"
+        dest: /srv/lnk
+
+    - name: Copy service to systemd
+      copy:
+        src: services/lnk.service
+        dest: /etc/systemd/system
+        owner: root
+        group: root
+
+    - name: Copy binary to bin
+      copy:
+        remote_src: true
+        src: /srv/lnk
+        dest: /usr/local/bin
+        mode: 0755
+        owner: root
+        group: root
+
+    - name: Start lnk
+      systemd:
+        name: lnk
+        state: started
+        enabled: yes
 
 - name: Setup redis
   hosts: redis
@@ -29,7 +66,6 @@
 
     - name: Install redis
       apt: name=redis-server state=latest
-
       notify:
         - systemctl restart redis.service
 

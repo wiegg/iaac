@@ -59,3 +59,28 @@ resource "hcloud_server" "db1" {
     ip         = "10.0.1.6"
   }
 }
+
+resource "hcloud_firewall" "db_firewall" {
+  name = "db_firewall"
+
+  rule {
+    direction  = "in"
+    protocol   = "tcp"
+    port       = "6379"
+    source_ips = [hcloud_network_subnet.subnet.ip_range]
+  }
+
+  rule {
+    direction = "in"
+    protocol  = "tcp"
+    port      = "22"
+    source_ips = [
+      "0.0.0.0/0",
+      "::/0"
+    ]
+  }
+
+  apply_to {
+    server = hcloud_server.db1.id
+  }
+}
