@@ -1,0 +1,10 @@
+[Unit]
+Description=lnk URL shortener
+
+[Service]
+User=lnk
+Group=lnk
+ExecStart=/usr/local/bin/lnk
+
+[Install]
+WantedBy=multi-user.target
