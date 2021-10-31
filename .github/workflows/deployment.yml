@@ -113,8 +113,8 @@ jobs:
   configure:
     name: 'Configure Machines'
     runs-on: ubuntu-latest
-    #needs: deploy
-    #if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: deploy
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
 
     steps:
     # Checkout the repository to the GitHub Actions runner
@@ -133,14 +133,10 @@ jobs:
     - name: Terraform Init
       run: terraform init -backend-config="storage_account_name=statestoragegh" -backend-config="container_name=tfwiegg" -backend-config="key=terraform.tfstate" -backend-config="access_key=${{ secrets.AZURE_STORAGE_KEY }}"
 
-    # - name: Install ansible
-    #   run: |
-    #     sudo apt update
-    #     sudo apt install ansible -y
-    #     ansible --version
-
     - name: Create ssh key
-      run: echo "$SSH_KEY" > ssh.key
+      run: |
+        echo "$SSH_KEY" > ssh.key
+        chmod 700 ssh.key
       env:
         SSH_KEY: ${{ secrets.SSH_KEY }}
 
@@ -156,3 +152,5 @@ jobs:
 
     - name: Run Playbook
       run: ansible-playbook --inventory-file=inventory.yml --private-key=ssh.key playbook.yml
+      env:
+        ANSIBLE_HOST_KEY_CHECKING: false
