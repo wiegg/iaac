@@ -6,6 +6,12 @@
     - name: Apache
       apt: name=apache2 update_cache=yes state=latest
 
+    - name: Get release
+      community.general.github_release:
+        user: wiegg
+        repo: lnk
+        action: latest_release
+
 - name: Setup redis
   hosts: redis
   user: root

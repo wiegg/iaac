@@ -150,6 +150,10 @@ jobs:
       env:
         STATE: ${{ steps.state.outputs.stdout }}
 
+    - name: Get Ansible modules
+      run: |
+        ansible-galaxy collection install community.general
+    
     - name: Run Playbook
       run: ansible-playbook --inventory-file=inventory.yml --private-key=ssh.key playbook.yml
       env:
