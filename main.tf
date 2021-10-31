@@ -43,3 +43,19 @@ resource "hcloud_server" "node1" {
     ip         = "10.0.1.5"
   }
 }
+
+resource "hcloud_server" "db1" {
+  name        = "db1"
+  image       = "ubuntu-20.04"
+  server_type = "cx11"
+  location    = "nbg1"
+
+  ssh_keys = [data.hcloud_ssh_key.private_key.id]
+
+  labels = { redis = 1 }
+
+  network {
+    network_id = hcloud_network.network.id
+    ip         = "10.0.1.6"
+  }
+}
