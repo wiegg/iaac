@@ -3,14 +3,21 @@
   user: root
 
   tasks:
-    - name: Apache
-      apt: name=apache2 update_cache=yes state=latest
+    - name: Install GitHub3
+      pip:
+        name: github3
 
     - name: Get release
       community.general.github_release:
         user: wiegg
         repo: lnk
         action: latest_release
+
+    - name: Find Standalone
+      find:
+        paths: .
+        recurse: yes
+        pattern: "*lnk*"
 
 - name: Setup redis
   hosts: redis
