@@ -38,6 +38,8 @@ resource "hcloud_server" "node1" {
 
   ssh_keys = [data.hcloud_ssh_key.private_key.id]
 
+  labels = { node = 1 }
+
   network {
     network_id = hcloud_network.network.id
     ip         = "10.0.1.5"
@@ -52,7 +54,7 @@ resource "hcloud_server" "db1" {
 
   ssh_keys = [data.hcloud_ssh_key.private_key.id]
 
-  labels = { redis = 1 }
+  labels = { db = 1 }
 
   network {
     network_id = hcloud_network.network.id
