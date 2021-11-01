@@ -57,7 +57,7 @@
         enabled: yes
 
 - name: Setup redis
-  hosts: redis
+  hosts: db
   user: root
 
   tasks:
@@ -66,8 +66,6 @@
 
     - name: Install redis
       apt: name=redis-server state=latest
-      notify:
-        - systemctl restart redis.service
 
     - name: Restart Redis Server
       service: name=redis state=restarted enabled=yes
