@@ -3,17 +3,21 @@ const yaml = require("yaml")
 
 const data = JSON.parse(process.env.STATE.toString())
 
-ip_list_nodes = {}
-ip_list_redis = {}
+let ip_list_nodes = {}
+let ip_list_db = {}
 
 data["resources"].forEach(i => {
+  // only work with servers that are managed by terraform
   if (i["type"] == "hcloud_server" && i["mode"] == "managed") {
     i["instances"].forEach(s => {
-      ip_list_nodes[s["attributes"]["ipv4_address"]] = null
+      // sort servers by label: node for application servers; db for db servers
+      if(s["attributes"]["labels"]["node"]) {
+        ip_list_nodes[s["attributes"]["ipv4_address"]] = null
+      } 
 
-      if(s["attributes"]["labels"]["redis"]) {
-        ip_list_redis[s["attributes"]["ipv4_address"]] = null
-      }
+      if(s["attributes"]["labels"]["db"]) {
+        ip_list_db[s["attributes"]["ipv4_address"]] = null
+      } 
     })
   }
 });
@@ -22,8 +26,8 @@ const inventory = {
   nodes: {
     hosts: ip_list_nodes
   },
-  redis: {
-    hosts: ip_list_redis
+  db: {
+    hosts: ip_list_db
   }
 }
 
