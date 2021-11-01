@@ -67,5 +67,12 @@
     - name: Install redis
       apt: name=redis-server state=latest
 
+    - name: Copy redis config
+      copy:
+        src: services/redis.conf
+        dest: /etc/redis/redis.conf
+        group: redis
+        owner: redis
+
     - name: Restart Redis Server
       service: name=redis state=restarted enabled=yes
