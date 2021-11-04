@@ -1,19 +1,6 @@
 - name: Start web server
   hosts: nodes
   user: root
-  roles:
-      - hispanico.nginx_revproxy
-  vars:
-    nginx_revproxy_sites:
-      default:
-        ssl: false
-        letsencrypt: false
-
-      lnk.wie.gg:
-        domains:
-          - lnk.wie.gg
-        upstreams:
-          - { backend_address: 127.0.0.1, backend_port: 8080 }
 
   tasks:
     - name: Install nginx
