@@ -3,6 +3,32 @@
   user: root
 
   tasks:
+    - name: Install nginx
+      apt:
+        name: nginx
+        state: present
+
+    - name: Copy nginx conf
+      copy:
+        src: services/lnk.wie.gg.conf
+        dest: /etc/nginx/sites-available/lnk.wie.gg.lnk
+        owner: nginx
+        group: nginx
+
+    - name: Create symlink
+      command:
+        cmd: ln -s /etc/nginx/sites-available/lnk.wie.gg.lnk /etc/nginx/sites-enabled/lnk.wie.gg.lnk
+
+    - name: Reaload nginx
+      command:
+        cmd: nginx -s reload
+
+    - name: Make sure nginx is running
+      service:
+        name: nginx
+        state: restarted
+        enabled: yes
+
     - name: Create lnk group
       group:
         name: lnk
