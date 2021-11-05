@@ -5,19 +5,34 @@
   tasks:
     - name: Install nginx
       apt:
-        name: nginx
+        update_cache: yes
+        name: ["nginx", "snapd"]
         state: present
+
+    - name: Install certbot
+      community.general.snap:
+        name: certbot
+        classic: true
+
+    - name: Create symlink for certbot
+      command:
+        cmd: ln -s /snap/bin/certbot /usr/bin/certbot
 
     - name: Copy nginx conf
       copy:
         src: services/lnk.wie.gg.conf
         dest: /etc/nginx/sites-available/lnk.wie.gg.lnk
-        owner: nginx
-        group: nginx
+        owner: www-data
+        group: www-data
 
     - name: Create symlink
       command:
         cmd: ln -s /etc/nginx/sites-available/lnk.wie.gg.lnk /etc/nginx/sites-enabled/lnk.wie.gg.lnk
+
+    - name: Remove default
+      file:
+        state: absent
+        path: /etc/nginx/sites-enabled/default
 
     - name: Reaload nginx
       command:
