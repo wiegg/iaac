@@ -114,7 +114,9 @@ jobs:
     name: 'Configure Machines'
     runs-on: ubuntu-latest
     needs: deploy
-    environment: Hetzner
+    environment: 
+      name: Hetzner
+      url: http://lnk.wie.gg
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
 
     steps:
