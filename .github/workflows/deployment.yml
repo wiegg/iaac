@@ -116,7 +116,7 @@ jobs:
     needs: deploy
     environment: 
       name: Hetzner
-      url: http://lnk.wie.gg
+      url: http://lnk.felixwie.com
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
 
     steps:
